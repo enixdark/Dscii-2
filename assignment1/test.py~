@@ -1,0 +1,9 @@
+import json
+twitter_data = open("output.txt")
+data = [] #create a list to store each line from the text file
+
+for line in twitter_data: #parse each line and store it as a list at data[index] 
+    data.append(json.loads(line))
+
+#print data[10] # to view all of the info in the first twitter line.
+print data[10]["text"] # will show the text of the tweet if text exists
