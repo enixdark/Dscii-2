@@ -1,11 +1,7 @@
 import sys
 import json
-def hw():
-   print 'Hello, world!'
 
-def lines(fp):
-   print str(len(fp.readlines()))
-
+count = 0.0
 def read_file(files):
 	scores = {} # initialize an empty dictionary
 	for line in files:
@@ -18,32 +14,39 @@ def json_read(files):
 	data = []
 	for line in files:
 		try:
-			df = json.loads(line)['text']
+			df = json.loads(line)[u'text']
 			data.append(df)
 		except:
 			pass
 	return data
 	
-def process(sent_file,tweet_file):
+def process(tweet):
+	global count
 	data = {}
-	for line in data_json:
-		for w in line.split(" "):
-			w = w.strip("""!@#$%^&*.,"'""").encode('utf-8').lower()
-			if not data.has_key(w):
-				data[w] = 1
-			else:
-				data[w] = +1
+	for line in tweet:
+		for w in line.split():
+			w = w.strip("""!@#$%^&*., "'""").encode('utf-8').lower()
+			if w!="":
+				if data.has_key(w):
+					data[w] += 1
+				else:
+					data[w] = 1
+					count +=1
 	return data
+
 				
 	 
 def main():
-	sent_file = open(sys.argv[1])
-	tweet_file = open(sys.argv[2])
-	data_sent_file = read_file(sent_file)
+	global count
+	#sent_file = open(sys.argv[1])
+	tweet_file = open(sys.argv[1])
+	#data_sent_file = read_file(sent_file)
 	data_json = json_read(tweet_file)
-	data = process(sent_file,tweet_file)
-	for key in data.keys():
-		print key,data[key]
+	data = process(data_json)
+	for _d in data.keys():
+		_calulator = float(data[_d]/count)
+		print _d,str(round(_calulator,5))
+	#tweet_file.close()
 	
 	
 

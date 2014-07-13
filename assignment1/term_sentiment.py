@@ -10,7 +10,7 @@ def read_file(files):
 	scores = {} # initialize an empty dictionary
 	for line in files:
 		term, score  = line.split("\t")  # The file is tab-delimited. "\t" means "tab character"
-	scores[term] = int(score)  # Convert the score to an integer.
+		scores[term] = int(score)  # Convert the score to an integer.
 
 	return scores# Print every (term, score) pair in the dictionary
 
@@ -32,13 +32,12 @@ def main():
 	data_json = json_read(tweet_file)
 	num = 0
 	for line in data_json:
-		if num > 10:break
+		#if num > 10:break
 		num_pos = 0
 		num_neg = 0
 		key_none = []
 		for w in line.split(" "):
 			w = w.strip("""!@#$%^&*.,"'""").encode('utf-8').lower()
-			print w
 			if w in data_sent_file.keys():
 				if data_sent_file[w] < 0:
 					num_neg +=1
@@ -48,7 +47,7 @@ def main():
 				key_none.append(w)
 		for i in key_none:
 			data_sent_file[i] = 0 if num_pos == num_neg else (num_pos - num_neg) / (num_pos + num_neg) * 5
-			print data_sent_file[i]
+			print i,data_sent_file[i]
 		#num+=1
 	
 

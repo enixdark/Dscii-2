@@ -1,29 +1,35 @@
 import sys
 import json
 
-def get_sentiment(sent_file):
-    afinnfile = open(sent_file)
-    scores = {}
-    for line in afinnfile:
-      term, score = line.split("\t")
-      scores[term] = int(score)
-    
-    return scores
+wfreq = {}
+wcount = 0.0
+
+def count(tweet_file):
+    global wcount
+    global wfreq
+    for line in tweet_file:
+        tweet = json.loads(line)
+        if (u'delete' in tweet):
+            continue
+        twords = tweet[u'text'].split()
+        for w in twords:
+            w = w.lower()
+            if w in wfreq.keys():
+                wfreq[w]+=1
+            else:
+                wfreq[w]=1
+                wcount+=1
+
+def frequency(tweet_file):
+    count(tweet_file)
+    for w in wfreq.keys():
+        f = float(wfreq[w]/wcount)
+        print w+" "+str(round(f, 4))
 
 def main():
-    sent_file = sys.argv[1]
-    tweet_file = open(sys.argv[2])
-
-    sentiment = get_sentiment(sent_file)
-
-    for line in tweet_file:
-        sent = 0
-        if not "delete" in json.loads(line).keys():
-            for w in json.loads(line)["text"].split():
-                w = w.strip("""!@#$%^&*."'""").encode('utf-8')
-                if w in sentiment.keys():
-                    sent += sentiment[w]
-        print "\t", sent
+    tweet_file = open(sys.argv[1])
+    frequency(tweet_file)
+    
 
 if __name__ == '__main__':
     main()
