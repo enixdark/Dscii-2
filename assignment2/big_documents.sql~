@@ -1,4 +1,0 @@
-select count(*) from (
-select docid,count(term) as total from Frequency group by docid having total >= 300);
-
-
